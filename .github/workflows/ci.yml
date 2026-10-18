@@ -1,0 +1,83 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_call:
+
+permissions:
+  contents: read
+
+jobs:
+  checks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          components: rustfmt, clippy
+      - run: cargo update
+      - run: cargo fmt --all -- --check
+      - run: cargo clippy --workspace --all-targets --all-features -- -D warnings
+      - run: cargo clippy -p sylk --all-targets --no-default-features -- -D warnings
+      - run: cargo clippy -p sylk --features server -- -D warnings
+      - run: cargo clippy -p sylk --all-targets --features server -- -D warnings
+      - run: cargo clippy -p sylk --all-targets --features standalone -- -D warnings
+
+  test:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        features: [no-default, all, server, standalone]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: cargo update
+      - if: matrix.features == 'no-default'
+        run: cargo test --workspace --all-targets --no-default-features
+      - if: matrix.features == 'no-default'
+        run: cargo test -p sylk --all-targets --no-default-features
+      - if: matrix.features == 'all'
+        run: cargo test --workspace --all-targets --all-features
+      - if: matrix.features != 'no-default' && matrix.features != 'all'
+        run: cargo test -p sylk --all-targets --features ${{ matrix.features }}
+      - if: matrix.os == 'macos-latest' && matrix.features == 'standalone'
+        run: cargo build -p sylk-examples --example standalone --features standalone,dioxus/desktop
+
+  minimum:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@master
+        with:
+          toolchain: 1.95.0
+      - run: cargo +1.95.0 update
+      - run: cargo +1.95.0 test --workspace --all-targets --all-features
+      - run: cargo +1.95.0 test -p sylk --all-targets --no-default-features
+
+  wasm:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@nightly
+        with:
+          targets: wasm32-unknown-unknown
+      - run: cargo update
+      - run: cargo clippy -p sylk --lib --target wasm32-unknown-unknown -- -D warnings
+      - run: cargo clippy -p sylk --lib --features standalone --target wasm32-unknown-unknown -- -D warnings
+      - run: cargo clippy -p sylk-examples --examples --features web --target wasm32-unknown-unknown -- -D warnings
+      - run: cargo clippy -p sylk-examples --example standalone --features standalone,dioxus/web --target wasm32-unknown-unknown -- -D warnings
+
+  docs:
+    runs-on: ubuntu-latest
+    env:
+      RUSTDOCFLAGS: -D warnings --cfg docsrs
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dtolnay/rust-toolchain@nightly
+      - run: cargo update
+      - run: cargo doc -p sylk -p sylk-macros --all-features --no-deps
+      - run: cargo doc -p sylk --no-default-features --no-deps
+      - run: cargo test --doc --workspace --all-features
