@@ -3,17 +3,17 @@ resolver = "3"
 members = ["sylk", "sylk-macros", "sylk-examples"]
 
 [workspace.package]
-version = "0.5.0"
+version = "0.6.0"
 edition = "2024"
 rust-version = "1.95"
 license = "MIT"
 repository = "https://github.com/efbx/sylk"
 
 [workspace.dependencies]
-anyhow = "1.0.104"
+anyhow = "1.0.105"
 dioxus = { version = "0.7.10", default-features = false }
 dioxus-fullstack = "0.7.10"
-tokio = { version = "1.53", default-features = false }
+tokio = { version = "1.54", default-features = false }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"

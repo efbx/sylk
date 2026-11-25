@@ -29,17 +29,17 @@ dioxus = { workspace = true, features = ["hooks", "signals"] }
 dioxus-fullstack = { workspace = true }
 anyhow = { workspace = true }
 inventory = "0.3.25"
-sylk-macros = { path = "../sylk-macros", version = "=0.5.0" }
+sylk-macros = { path = "../sylk-macros", version = "=0.6.0" }
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 tokio = { workspace = true, features = ["time"] }
 
 [target.'cfg(target_family = "wasm")'.dependencies]
-gloo-timers = { version = "0.4.0", features = ["futures"] }
-js-sys = "0.3.106"
+gloo-timers = { version = "0.4.1", features = ["futures"] }
+js-sys = "0.3.107"
 web-time = "1.1.0"
 dioxus-fullstack = { workspace = true, features = ["web"] }
-wasm-bindgen-futures = { version = "0.4.79", optional = true }
+wasm-bindgen-futures = { version = "0.4.80", optional = true }
 
 [dev-dependencies]
 dioxus = { workspace = true, features = ["macro", "html", "fullstack"] }

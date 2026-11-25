@@ -29,7 +29,7 @@ Fullstack:
 [dependencies]
 dioxus = { version = "0.7.10", features = ["fullstack"] }
 dioxus-fullstack = { version = "0.7.10", default-features = false }
-sylk = "0.5"
+sylk = "0.6"
 
 [features]
 web = ["dioxus/web"]
@@ -41,7 +41,7 @@ Standalone:
 ```toml
 [dependencies]
 dioxus = { version = "0.7.10", features = ["desktop"] }
-sylk = "0.5"
+sylk = "0.6"
 
 [features]
 default = ["standalone"]

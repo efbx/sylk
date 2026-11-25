@@ -84,7 +84,7 @@
 //! ```toml
 //! [dependencies]
 //! dioxus = { version = "0.7.10", features = ["desktop"] }
-//! sylk = "0.5"
+//! sylk = "0.6"
 //!
 //! [features]
 //! default = ["standalone"]
@@ -256,7 +256,7 @@
 //! [dependencies]
 //! dioxus-fullstack = { version = "0.7.10", default-features = false }
 //! dioxus-server = { version = "0.7.10", optional = true }
-//! sylk = "0.5"
+//! sylk = "0.6"
 //!
 //! [features]
 //! server = ["dioxus-fullstack/server", "dep:dioxus-server", "sylk/server"]
