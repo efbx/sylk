@@ -29,7 +29,7 @@ dioxus = { workspace = true, features = ["hooks", "signals"] }
 dioxus-fullstack = { workspace = true }
 anyhow = { workspace = true }
 inventory = "0.3.25"
-sylk-macros = { path = "../sylk-macros", version = "=0.6.1" }
+sylk-macros = { path = "../sylk-macros", version = "=0.6.2" }
 
 [target.'cfg(not(target_family = "wasm"))'.dependencies]
 tokio = { workspace = true, features = ["time"] }
